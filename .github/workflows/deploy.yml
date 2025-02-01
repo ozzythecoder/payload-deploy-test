@@ -1,0 +1,23 @@
+name: Deploy App
+
+on:
+    push:
+        branches: [main]
+
+permissions:
+    contents: read
+
+jobs:
+    deploy-app:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v4
+            - name: Deploy application
+              uses: digitalocean/app_action/deploy@v2
+              env:
+                  PROD_DB_URI: ${{ secrets.PROD_DATABASE_URI }}
+                  PROD_PAYLOAD_SECRET: ${{ secrets.PROD_PAYLOAD_SECRET }}
+                  PROD_SERVICE_URL: ${{ secrets.PROD_SERVICE_URL }}
+              with:
+                  token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}

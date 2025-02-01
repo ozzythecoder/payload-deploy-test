@@ -1,0 +1,23 @@
+name: payload-deploy-test
+services:
+    - name: webserver
+      environment-slug: nodejs
+      github:
+          repo: ozzythecoder/payload-deploy-test
+          branch: main
+          deploy_on_push: false
+      instance_size_slug: basic-xxs
+      build_command: pnpm build
+      run_command: pnpm start
+      http_port: 8080
+      envs:
+          - key: NODE_ENV
+            value: production
+            scope: RUN_TIME
+          - key: DATABASE_URI
+            value: ${PROD_DB_URI}
+            type: SECRET
+          - key: PAYLOAD_SECRET
+            value: ${PROD_PAYLOAD_SECRET}
+            type: SECRET
+
